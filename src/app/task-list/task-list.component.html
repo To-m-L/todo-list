@@ -1,0 +1,90 @@
+<mat-toolbar style="margin-bottom: 100px; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <span style="color: #000000;">Tom's To-Do List</span>
+  <span class="spacer"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" style="color:#000000">
+    <mat-icon matBadge="{{getTasksDueToday().length > 0 ? getTasksDueToday().length : ''}}" matBadgeColor="warn">notifications</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <ng-container *ngFor="let task of getTasksDueToday()">
+      <button mat-menu-item>{{ task.title }}</button>
+    </ng-container>
+    <div *ngIf="getTasksDueToday().length === 0" mat-menu-item>No tasks due today</div>
+  </mat-menu>
+  <button mat-icon-button>
+    <mat-icon style="color: #000000;">account_circle</mat-icon> 
+  </button>
+  <button mat-icon-button>
+    <mat-icon style="color: #000000;">discord</mat-icon>
+  </button>
+  <button mat-icon-button>
+    <mat-icon style="color: #000000;">reddit</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div style="margin: 0 auto; width: 90%;">
+  <div style="display: flex; justify-content: space-between;">
+    <!-- Task Statistics Section -->
+  <div class="statistics-box" style="width: 30%; display: inline-block; vertical-align: top; margin-right: 20px; font-family: 'Roboto', sans-serif; background-color: #333333; color: #ffffff; padding: 20px; border-radius: 8px;">
+    <h3 style="margin-bottom: 10px; font-size: 18px;">Task Statistics</h3>
+    <div>
+      <p style="margin-bottom: 5px; font-size: 16px;">Total Tasks: {{ tasks.length }}</p>
+      <p style="margin-bottom: 5px; font-size: 16px;">Tasks Due Today: {{ getTasksDueToday().length }}</p>
+      <p style="margin-bottom: 5px; font-size: 16px;">High Priority Tasks: {{ getHighPriorityTasksCount() }}</p>
+      <!-- Additional statistics here -->
+    </div>
+    </div>
+
+    <!-- Table for tasks -->
+    <div style="width: 75%;">
+      <mat-table class="task-list" [dataSource]="dataSource" style="">
+        <!-- Title Column -->
+        <ng-container matColumnDef="title">
+          <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+          <mat-cell *matCellDef="let task">{{ task.title }}</mat-cell>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+          <mat-cell *matCellDef="let task">{{ task.description }}</mat-cell>
+        </ng-container>
+
+        <!-- Due Date Column -->
+        <ng-container matColumnDef="dueDate">
+          <mat-header-cell *matHeaderCellDef>Due Date</mat-header-cell>
+          <mat-cell *matCellDef="let task">{{ task.dueDate | date }}</mat-cell>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>Complete?</mat-header-cell>
+          <mat-cell *matCellDef="let task">
+            <button mat-icon-button style="color: palevioletred" (click)="deleteTask(task)">
+              <mat-icon>check</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <!-- Priority Column -->
+        <ng-container matColumnDef="priority">
+          <mat-header-cell *matHeaderCellDef>Priority</mat-header-cell>
+          <mat-cell *matCellDef="let task">
+            <mat-chip>{{ task.priority }}</mat-chip>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+
+  <!-- Button to add a new task -->
+  <button mat-raised-button (click)="openAddTaskDialog()" style="margin-top: 20px;">Add Task</button>
+</div>
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+<h1 mat-dialog-title style="margin-bottom: 10px; text-align: center; font-family: 'Lato', sans-serif; color: white; margin-top: 20px;">Add New Task</h1>
+<div mat-dialog-content style="padding: 20px; display: flex; flex-direction: column; align-items: center;">
+  <form #taskForm="ngForm" (ngSubmit)="onSubmit()" style="width: 100%;">
+    <mat-form-field style="width: 100%; margin-bottom: 20px;">
+      <input matInput placeholder="Title" name="title" [(ngModel)]="task.title" required>
+    </mat-form-field>
+    <mat-form-field style="width: 100%; margin-bottom: 20px;">
+      <textarea matInput placeholder="Description" name="description" [(ngModel)]="task.description" required></textarea>
+    </mat-form-field>
+    <mat-form-field style="width: 100%; margin-bottom: 20px;">
+      <input matInput [matDatepicker]="dueDatePicker" placeholder="Due Date" name="dueDate" [(ngModel)]="task.dueDate" required>
+      <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #dueDatePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field style="width: 100%; margin-bottom: 20px;">
+      <mat-label>Priority</mat-label>
+      <mat-select placeholder="Select Priority" [(ngModel)]="task.priority" name="priority" required>
+        <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions style="justify-content: flex-end; margin-top: 20px;">
+  <button mat-button (click)="onCancel()" style="margin-left: 10px;">Cancel</button>
+  <button mat-button color="primary" [disabled]="taskForm.invalid" (click)="onSubmit()" style="margin-left: 10px;">Add</button>
+</div>
